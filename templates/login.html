@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+<div class="mainlogin" style="position:relative; width: 400px; background:white; height: 500px; box-shadow: 0 12px 19px rgba(0, 0, 0, 0.2); border-radius: 40px; margin: auto; padding: 20px;">
+    <center>
+        <h3 style="color: black; margin-bottom: 20px;">Login</h3>
+    </center>
+
+    <form action="/login" method="post">
+        <div class="form-group">
+            <input
+                style="border-radius: 50px; width: 100%; padding: 10px; border: 1px solid #ccc;"
+                autocomplete="off"
+                autofocus
+                class="form-control"
+                name="username"
+                placeholder="🗒 Username"
+                type="text"
+                id="username"
+            />
+        </div>
+
+        {% if messager == 1 %}
+        <center>
+            <div class="alert alert-danger" role="alert" style="border-radius: 50px; width: 100%; max-width: 300px; text-align: center;">
+                &#9997 Ingrese el nombre de usuario.
+            </div>
+        </center>
+        {% endif %}
+        <br>
+
+        <div class="form-group">
+            <input
+                style="border-radius: 50px; width: 100%; padding: 10px; border: 1px solid #ccc;"
+                class="form-control"
+                name="password"
+                placeholder="&#128273 Password"
+                type="password"
+                id="password"
+            />
+        </div>
+
+        {% if messager == 2 %}
+        <center>
+            <div class="alert alert-danger" role="alert" style="border-radius: 50px; width: 100%; max-width: 300px; text-align: center;">
+                &#9997 Introduce la contraseña.
+            </div>
+        </center>
+        {% endif %}
+        <br>
+
+        <div style="text-align: center; margin-bottom: 20px;">
+            Or<br>
+            <a href="/facereg" style="text-decoration: none; color: #007bff;">Face Password</a>
+        </div>
+
+        <button class="btn btn-success" type="submit" style="border-radius: 50px; width: 100%; max-width: 200px;">
+            Log In
+        </button>
+    </form>
+
+    {% if messager == 3 %}
+    <center>
+        <div class="alert alert-danger" role="alert" style="border-radius: 50px; width: 100%; max-width: 300px; text-align: center;">
+            &#10060 Contraseña o nombre de usuario no válidos.
+        </div>
+    </center>
+    {% endif %}
+</div>
+{% endblock %}
