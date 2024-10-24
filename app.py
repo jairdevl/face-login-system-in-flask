@@ -1,4 +1,4 @@
-# Import libreries
+#"" Import libreries
 from flask import Flask, render_template, redirect, session, request, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 import mysql.connector
