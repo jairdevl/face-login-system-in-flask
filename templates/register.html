@@ -1,0 +1,127 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="header d-flex justify-content-end" style="position: relative; left: -50px;">
+    <h5>
+        <a href="/admin">Volver</a>
+    </h5>
+</div>
+
+<div class="register"
+    style="position: relative; width: 400px; background: white; height: 550px; box-shadow: 0 12px 19px rgba(0, 0, 0, 0.2); border-radius: 10px; margin: auto; padding: 20px;">
+
+    <center>
+        <h3 style="margin-top: 14px; margin-bottom: 30px;">Register</h3>
+    </center>
+
+    <form action="/register" method="POST" enctype="multipart/form-data">
+
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="👤 Nombre de usuario"
+                type="text"
+                style="border-radius: 10px; width: 100%; padding: 10px; border: 1px solid #ccc; font-size: 14px;">
+        </div>
+
+        {% if messager == 1 %}
+        <center>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                style="border-radius: 10px; width: 100%; max-width: 400px; text-align: center; font-size: 14px;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="float: right;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                &#9997 Por favor, ingrese su nombre de usuario.
+            </div>
+        </center>
+        {% endif %}
+
+        <br>
+
+        <div class="form-group" style="position: relative;">
+            <input style="border-radius: 10px; width: 100%; padding: 10px; border: 1px solid #ccc; font-size: 14px;"
+                class="form-control" name="password" placeholder="&#128273 Contraseña" type="password" id="password">
+            <button type="button" id="togglePassword"
+                style="background: none; border: none; cursor: pointer; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: flex; align-items: center;">
+                <img id="eyeIcon" src="{{ url_for('static', filename='eye-closed.png')}}"
+                    alt="Toggle password visibility" style="width: 20px; height: 20px;">
+            </button>
+        </div>
+
+        {% if messager == 2 %}
+        <center>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                style="border-radius: 10px; width: 100%; text-align: center; margin-bottom: 0px;  font-size: 14px;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="close" style="float: right;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                &#9997 Por favor, ingrese su contraseña.
+            </div>
+        </center>
+        {% endif %}
+
+        <br>
+
+        <div class="form-group" style="position: relative;">
+            <input
+                style="border-radius: 10px; width: 100%; max-width: 400px; padding: 10px; border: 1px solid #ccc; font-size: 14px;"
+                class="form-control" name="confirmation" placeholder="&#128273 Confirmar Contraseña" type="password"
+                id="confirmation" />
+
+            <button type="button" id="toggleConfirmation"
+                style="background: none; border: none; cursor: pointer; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                <img id="eyeIconConfirmation" src="{{ url_for('static', filename='eye-closed.png') }}"
+                    alt="Toggle password visibility" style="width: 20px; height: 20px;">
+            </button>
+        </div>
+
+        {% if messager == 4 %}
+        <center>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                style="border-radius: 10px; width: 100%; max-width: 400px; text-align: center; font-size: 14px;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="float: right;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                &#9997 Por favor, confirme su contraseña.
+            </div>
+        </center>
+        {% endif %}
+
+        <br>
+
+        <div style="text-align: center;">
+            <button class="btn btn-success" type="submit" style="border-radius:10px; width: 100%; max-width: 400px;">
+                Registrar
+            </button>
+        </div>
+
+        {% if messager == 3 %}
+        <center>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                style="border-radius: 10px; width: 100%; max-width: 400px; text-align: center; margin-top: 18px;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="float: right;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                &#10060 Las contraseñas no coinciden. Por favor, inténtelo de nuevo.
+            </div>
+        </center>
+        {% endif %}
+
+        <br>
+
+        {% if messager == 5 %}
+        <center>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                style="border-radius: 10px; width: 100%; max-width: 400px; text-align:center;">
+                <button type='button' class='close' data-dismiss='alert' aria-label='close' style='float:right'>
+                    <span aria-hidden='true'>&times;</span>
+                </button>
+                &#9997 Nombre de usuario ya está en uso.
+            </div>
+        </center>
+        {% endif %}
+
+    </form>
+</div>
+
+<script src="{{ url_for('static', filename='js/button.js') }}"></script>
+
+{% endblock %}

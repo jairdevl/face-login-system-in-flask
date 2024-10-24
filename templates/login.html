@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="mainlogin"
+    style="position: relative; width: 400px; background: white; height: 550px; box-shadow: 0 12px 19px rgba(0, 0, 0, 0.2); border-radius: 10px; margin: auto; padding: 20px;">
+    <center>
+        <h2 style="margin-top: 14px; margin-bottom: 30px;">Login</h2>
+    </center>
+    <form action="/login" method="POST">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" id="username"
+                placeholder="👤 Nombre de usuario" type="text"
+                style="border-radius: 10px; width: 100%; padding: 10px; border: 1px solid #ccc; font-size: 14px;">
+        </div>
+
+        {% if messager == 1%}
+        <center>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                style="border-radius: 10px; width: 100%; text-align: center; font-size: 14px;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="close" style="float: right;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                &#9997 Por favor, ingrese su nombre de usuario.
+            </div>
+        </center>
+        {% endif %}
+
+        <br>
+
+        <div class="form-group" style="position: relative;">
+            <input style="border-radius: 10px; width: 100%; padding: 10px; border: 1px solid #ccc; font-size: 14px;"
+                class="form-control" name="password" placeholder="&#128273 Contraseña" type="password" id="password">
+            <button type="button" id="togglePassword"
+                style="background: none; border: none; cursor: pointer; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: flex; align-items: center;">
+                <img id="eyeIcon" src="{{ url_for('static', filename='eye-closed.png')}}"
+                    alt="Toggle password visibility" style="width: 20px; height: 20px;">
+            </button>
+        </div>
+
+        {% if messager == 2 %}
+        <center>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                style="border-radius: 10px; width: 100%; text-align: center; margin-bottom: 0px;  font-size: 14px;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="close" style="float: right;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                &#9997 Por favor, ingrese su contraseña.
+            </div>
+        </center>
+        {% endif %}
+
+        <div style="text-align: center; margin-top: 40px;">
+            <button class="btn btn-primary" type="submit"
+                style="border-radius: 10px;width: 100%; background-color: #1877F2; color: white; border: none;">Log
+                in</button>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/facesetup">
+                <button class="btn btn-success" type="button"
+                    style="border-radius: 10px; width: 100%; background-color: #28a745; color: white; border:none;">Log
+                    in face</button>
+            </a>
+        </div>
+    </form>
+
+    {% if messager == 3 %}
+    <center>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert"
+            style="border-radius: 10px; width: 100%; text-align: center; margin-top: 18px; font-size: 14px;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                <span aria-hidden="ture">&times;</span>
+            </button>
+            &#10060 Nombre de usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.
+        </div>
+    </center>
+    {% endif %}
+
+</div>
+
+<script src="{{ url_for('static', filename='js/button.js') }}"></script>
+
+{% endblock %}
