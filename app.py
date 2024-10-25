@@ -6,6 +6,7 @@ import face_recognition
 import mysql.connector
 import secrets
 import zlib
+import os
 
 # New instance flask
 app = Flask(__name__)
@@ -143,7 +144,66 @@ def facereg():
         return redirect("/admin")
     return render_template("face.html")
 
-
+@app.route("/facesetup", methods=["GET", "POST"])
+def facereg():
+    # Clear login
+    session.clear()
+    if request.method == "POST":
+        encoded_image = (request.form.get("pic") + "==").encode('utf-8')
+        username = request.form.get("name")
+        # Create cursor database
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+        user = cursor.fetchone()
+        # If the user is not found. Show error message
+        if not user:
+            flash("⚠️ Usuario no encontrado. Por favor, comuníquese con el admistrador.", category="warning")
+            return render_template("camera.html")
+        # Get the id of the found user
+        id_ = user['id']
+        compressed_data = zlib.compress(encoded_image, 9)
+        uncompressed_data = zlib.decompress(compressed_data)
+        decoded_data = b64decode(uncompressed_data)
+        dir_path = './static/face/unknown/'
+        file_path = os.path.join(dir_path, f'{id_}.jpg')
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+        # Upload unknown images for facial recognition
+        try:
+            with open(file_path, 'wb') as new_image_handle:
+                new_image_handle.write(decoded_data)
+        except IOError:
+            flash("❌ Error al guardar la imagen. Por favor, intenta nuevamente.", category="danger")
+            return render_template("camera.html")
+        try:
+            registered_image = face_recognition.load_image_file(f'./static/face/{id_}.jpg')
+            registered_face_encodings = face_recognition.face_encodings(registered_image)
+            if not registered_face_encodings:
+                flash("🔍 Imagen no clara. Asegúrate de que tu rostro esté bien iluminado y visible.", category="warning")
+                return render_template("camera.html")
+            registered_face_encoding = registered_face_encodings[0]
+        except FileNotFoundError:
+            flash("❌ Usuario incorrecto. Por favor, vuelve a seleccionar tu nombre de usuario.", category="danger")
+            return render_template("camera.html")
+        try:
+            unknown_image = face_recognition.load_image_file(file_path)
+            unknown_face_encodings = face_recognition.face_encodings(unknown_image)
+            if not unknown_face_encodings:
+                flash("🔍 Imagen no clara. Asegúrate de que tu rostro esté bien iluminado y visible.", category="warning")
+                return render_template("camera.html")
+            unknown_face_encoding = unknown_face_encodings[0]
+        except FileNotFoundError:
+            flash("❌ Error al cargar la imagen. Asegúrate de que la imagen se haya guardado correctamente.", category="danger")
+            return render_template("camera.html")
+        # Compare face with a precese threshold
+        face_distances = face_recognition.face_distance([registered_face_encoding], unknown_face_encoding)
+        if len(face_distances) > 0 and face_distances[0] < 0.4:  
+            session["user_id"] = user["id"]
+            return redirect("/admin")
+        else:
+            flash("🚫 Rostro incorrecto. Acceso denegado.", category="danger")
+            return render_template("camera.html")
+    return render_template("camera.html")
 
 # Inicialize web
 if __name__ == "__main__":
