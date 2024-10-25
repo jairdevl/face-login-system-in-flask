@@ -2,6 +2,7 @@
 from flask import Flask, render_template, redirect, session, request, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 from base64 import b64decode
+import face_recognition
 import mysql.connector
 import secrets
 import zlib
