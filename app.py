@@ -1,8 +1,10 @@
 # Import libreries
 from flask import Flask, render_template, redirect, session, request, flash
 from werkzeug.security import check_password_hash, generate_password_hash
+from base64 import b64decode
 import mysql.connector
 import secrets
+import zlib
 
 # New instance flask
 app = Flask(__name__)
@@ -100,6 +102,47 @@ def register():
         flash(f"Usuario registrado como {input_username}")
         return redirect("/admin")
     return render_template("register.html")
+
+@app.route("/facereg", methods=["GET", "POST"])
+def facereg():
+    if request.method == "POST":
+        # Get and encode the imagen
+        encoded_image = (request.form.get("pic") + "==").encode("utf-8")
+        # Create cursor database
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute("SELECT id FROM users WHERE id = %s", (session["user_id",]))
+        user = cursor.fetchone()
+        # If the user not found, display an error message
+        if not user:
+            flash("⚠️ Usuario no encontrado. Por favor, inicia sesión nuevamente.", category="danger")
+            return render_template("face.html")
+        id = user["id"]
+        compressed_data = zlib.compress(encoded_image, 9)
+        uncompressed_data = zlib.decompress(compressed_data)
+        decoded_data = b64decode(uncompressed_data)
+        file_path = f'./static/face/{id}.jpg'
+        # Upload image for facial recognition
+        try:
+            with open(file_path, 'wb') as new_image_handle:
+                new_image_handle.write(decoded_data)
+        except IOError:
+            flash("❌ Error al guardar la imagen. Por favor, intenta nuevamente.", category="danger")
+            return render_template("face.html")
+        try:
+            image = face_recognition.load_image_file(file_path)
+            face_encodings = face_recognition.face_encodings(image)
+            if not face_encodings:
+                os.remove(file_path)
+                flash("🔍 Imagen no clara. Asegúrate de que tu rostro esté bien iluminado y visible.", category="warning")
+                return render_template("face.html")
+        except Exception as e:
+            flash("⚠️ Error al procesar la imagen. Por favor, intenta nuevamente.")
+            return render_template("face.html")
+        flash("✅ Imagen capturada correctamente. ¡Listo para continuar!", category="success")
+        return redirect("/admin")
+    return render_template("face.html")
+
+
 
 # Inicialize web
 if __name__ == "__main__":
