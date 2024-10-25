@@ -4,6 +4,7 @@ const context = canvas.getContext('2d');
 const captureButton = document.getElementById('capture');
 const scan = document.getElementById('scan');
 const img = document.getElementById('pic');
+const name = document.getElementById('name');
 
 const vgaconstraints = {
     video: { width: { exact: 640 }, height: { exact: 480 } },
@@ -14,6 +15,7 @@ function capture() {
     player.style.display = "none";
     captureButton.style.display = "none";
     scan.style.display = "block";
+    name.style.display = "block";
 
     cap = canvas.toDataURL('image/png').split(",")[1];
     img.value = cap;

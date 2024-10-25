@@ -106,23 +106,23 @@ def register():
     return render_template("register.html")
 
 @app.route("/facereg", methods=["GET", "POST"])
-def facereg():
+def facesetup():
     if request.method == "POST":
-        # Get and encode the imagen
-        encoded_image = (request.form.get("pic") + "==").encode("utf-8")
+        # Get and encode the image
+        encoded_image = (request.form.get("pic") + "==").encode('utf-8')
         # Create cursor database
         cursor = cnx.cursor(dictionary=True)
-        cursor.execute("SELECT id FROM users WHERE id = %s", (session["user_id",]))
+        cursor.execute("SELECT id FROM users WHERE id = %s", (session["user_id"],))
         user = cursor.fetchone()
-        # If the user not found, display an error message
+        # If the user is not found, displat an error message
         if not user:
             flash("⚠️ Usuario no encontrado. Por favor, inicia sesión nuevamente.", category="danger")
             return render_template("face.html")
-        id = user["id"]
+        id_ = user["id"]
         compressed_data = zlib.compress(encoded_image, 9)
         uncompressed_data = zlib.decompress(compressed_data)
         decoded_data = b64decode(uncompressed_data)
-        file_path = f'./static/face/{id}.jpg'
+        file_path = f'./static/face/{id_}.jpg'
         # Upload image for facial recognition
         try:
             with open(file_path, 'wb') as new_image_handle:

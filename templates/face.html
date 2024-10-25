@@ -25,21 +25,30 @@
 <div
     style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100vh; margin: 0; padding: 0;">
     <div style="position: relative; width: 640px; height: 480px;">
-        <canvas id="canvas"
-            style="position: absolute; top: 0; left: 0; z-index: -1; width: 640; height: 480pz;"></canvas>
-        <video id="player" autoplay style="width: 640px; height: 480px;"></video>
+        <canvas id="canvas" style="position: absolute; top: 0; left: 0; z-index: -1; width: 640px; height: 480px;">
+        </canvas>
+
+        <video id="player" autoplay style="width: 640px; height: 480px;">
+        </video>
     </div>
 
     <button id="capture" class="btn btn-primary" onclick="capture()"
-        style="border-radius: 10px; margin-top: 20px; padding: 10px 20px; font-size: 14px;">Capture</button>
+        style="border-radius: 5px; margin-top: 20px; padding: 10px 20px; font-size: 16px;">
+        Capture
+    </button>
 
-    <form action="/facereg" method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
-        <input type="text" id="pic" name="pic" style="display: none;">
+    <form action="/facereg" method="post" enctype="multipart/form-data" style="margin-top: 20px;">
+        <input type="text" id="pic" name="pic" style="display:none">
+
         <button id="scan" class="btn btn-primary"
-            style="border-radius: 10px; padding: 10px 20px; font-size: 14; display: none;"></button>
+            style="border-radius: 5px; padding: 10px 20px; font-size: 16px; display:none;">
+            Scan
+        </button>
     </form>
 </div>
 
 <script src="{{ url_for('static', filename='js/face.js') }}"></script>
+
+</html>
 
 {% endblock %}
