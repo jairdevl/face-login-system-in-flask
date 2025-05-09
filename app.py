@@ -14,7 +14,7 @@ app = Flask(__name__)
 # Setting database
 app.config["MYSQL_HOST"] = "localhost"
 app.config["MYSQL_USER"] = "root"
-app.config["MYSQL_PASSWORD"] = "whoami"
+app.config["MYSQL_PASSWORD"] = "fazt"
 app.config["MYSQL_DB"] = "database"
 app.config["SECRET_KEY"] = secrets.token_bytes(16)
 
@@ -146,7 +146,6 @@ def facesetup():
 
 @app.route("/facesetup", methods=["GET", "POST"])
 def facereg():
-    # Clear login
     session.clear()
     if request.method == "POST":
         encoded_image = (request.form.get("pic") + "==").encode('utf-8')
