@@ -20,7 +20,6 @@ function capture() {
     cap = canvas.toDataURL('image/png').split(",")[1];
     img.value = cap;
 }
-
 function stop() {
     player.srcObject.getVideoTracks().forEach(track => track.stop());
 }
