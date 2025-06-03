@@ -2,10 +2,6 @@
 
 A secure authentication system that combines traditional username/password login with facial recognition technology, built with Flask.
 
-![Facial Recognition Login](https://img.shields.io/badge/Security-Facial%20Recognition-blue)
-![Flask](https://img.shields.io/badge/Framework-Flask-green)
-![Python](https://img.shields.io/badge/Language-Python-yellow)
-
 ## 📋 Table of Contents
 
 - [Overview](#overview)
